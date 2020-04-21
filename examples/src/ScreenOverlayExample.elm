@@ -2,6 +2,7 @@ port module ScreenOverlayExample exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Browser
 import Html.Events exposing (onClick)
 import ScreenOverlay exposing (ScreenOverlay)
 
@@ -71,9 +72,8 @@ type Msg
 -- ******
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Cmd.none )
+init : () -> ( Model, Cmd Msg )
+init _ = ( initialModel, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -96,15 +96,13 @@ view : Model -> Html Msg
 view { overlay } =
     div
         [ id "main"
-        , style
-            [ ( "padding", "2rem" )
-            , ( "background-color", "#c5dae6" )
-            , ( "height", "100%" )
-            ]
+        , style "padding" "2rem"
+        , style "background-color" "#c5dae6"
+        , style  "height" "100%"
         ]
         [ h2 [] [ text "This is the main page content" ]
         , div []
-            [ button [ style [ ( "color", "#6290ea" ) ], onClick OpenOverlay ]
+            [ button [ style "color" "#6290ea", onClick OpenOverlay ]
                 [ text "Show Overlay" ]
             ]
         , ScreenOverlay.overlayView overlay CloseOverlay overlayContent
@@ -113,11 +111,10 @@ view { overlay } =
 
 overlayContent : Html Msg
 overlayContent =
-    div [ style [ ( "width", "75%" ) ] ]
+    div [ style "width" "75%" ]
         [ h3 [] [ text "This is in the Overlay View" ]
         , div [] [ text "Bacon ipsum dolor amet kevin swine chicken filet mignon cupim. Boudin pork chop rump drumstick capicola kevin cupim ham. Meatball jerky andouille frankfurter sausage short ribs. Chuck cupim kevin capicola." ]
         ]
-
 
 
 -- ***
@@ -125,9 +122,8 @@ overlayContent =
 -- ***
 
 
-main : Program Never Model Msg
 main =
-    Html.program
+    Browser.element
         { init = init
         , update = update
         , subscriptions = \_ -> Sub.none
